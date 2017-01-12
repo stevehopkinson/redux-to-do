@@ -20,11 +20,27 @@ function counter() {
 }
 
 var Counter = function Counter(_ref) {
-  var value = _ref.value;
+  var value = _ref.value,
+      onIncrement = _ref.onIncrement,
+      onDecrement = _ref.onDecrement;
   return React.createElement(
-    'h1',
+    'div',
     null,
-    value
+    React.createElement(
+      'h1',
+      null,
+      value
+    ),
+    React.createElement(
+      'button',
+      { onClick: onIncrement },
+      '+'
+    ),
+    React.createElement(
+      'button',
+      { onClick: onDecrement },
+      '-'
+    )
   );
 };
 
@@ -33,15 +49,19 @@ var createStore = Redux.createStore;
 var store = createStore(counter);
 
 var render = function render() {
-  ReactDOM.render(React.createElement(Counter, { value: store.getState() }), document.getElementById('root'));
+  ReactDOM.render(React.createElement(Counter, {
+    value: store.getState(),
+    onIncrement: function onIncrement() {
+      store.dispatch({ type: 'INCREMENT' });
+    },
+    onDecrement: function onDecrement() {
+      store.dispatch({ type: 'DECREMENT' });
+    }
+  }), document.getElementById('root'));
 };
 
 store.subscribe(render);
 render();
-
-document.addEventListener('click', function () {
-  store.dispatch({ type: 'INCREMENT' });
-});
 
 },{"react":187,"react-dom":36,"redux":193}],2:[function(require,module,exports){
 (function (process){
